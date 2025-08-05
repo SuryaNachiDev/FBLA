@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FBLA Volunteer Connect - Find Local Opportunities</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-hands-helping"></i>
+                    <h1>FBLA Volunteer Connect</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#opportunities" class="nav-link">Opportunities</a>
+                    <a href="#about" class="nav-link">About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Connect with Your Community</h2>
+                <p>Discover meaningful volunteer opportunities near you and make a difference while fulfilling your service hour requirements.</p>
+                <button class="cta-button" onclick="scrollToMap()">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Find Opportunities
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Filters Section -->
+            <section class="filters-section">
+                <div class="filters-header">
+                    <h3>Find the Perfect Opportunity</h3>
+                    <button class="location-btn" onclick="getUserLocation()">
+                        <i class="fas fa-location-arrow"></i>
+                        Use My Location
+                    </button>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="category-filter">Category</label>
+                        <select id="category-filter" onchange="applyFilters()">
+                            <option value="">All Categories</option>
+                            <option value="environment">Environment</option>
+                            <option value="education">Education</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="community">Community Service</option>
+                            <option value="seniors">Senior Care</option>
+                            <option value="animals">Animal Welfare</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="date-filter">Date</label>
+                        <select id="date-filter" onchange="applyFilters()">
+                            <option value="">Any Date</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="upcoming">Upcoming</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="age-filter">Minimum Age</label>
+                        <select id="age-filter" onchange="applyFilters()">
+                            <option value="">Any Age</option>
+                            <option value="13">13+</option>
+                            <option value="16">16+</option>
+                            <option value="18">18+</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="distance-filter">Max Distance</label>
+                        <select id="distance-filter" onchange="applyFilters()">
+                            <option value="">Any Distance</option>
+                            <option value="5">5 miles</option>
+                            <option value="10">10 miles</option>
+                            <option value="25">25 miles</option>
+                            <option value="50">50 miles</option>
+                        </select>
+                    </div>
+
+                    <button class="clear-filters" onclick="clearFilters()">
+                        <i class="fas fa-times"></i>
+                        Clear Filters
+                    </button>
+                </div>
+            </section>
+
+            <!-- Map and Opportunities -->
+            <section class="content-section">
+                <div class="content-grid">
+                    <!-- Map -->
+                    <div class="map-container">
+                        <div id="map"></div>
+                        <div class="map-controls">
+                            <button class="map-control" onclick="centerMapOnUser()" title="Center on my location">
+                                <i class="fas fa-crosshairs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Opportunities List -->
+                    <div class="opportunities-container">
+                        <div class="opportunities-header">
+                            <h3>Available Opportunities</h3>
+                            <span class="opportunity-count" id="opportunity-count">0 opportunities found</span>
+                        </div>
+                        <div class="opportunities-list" id="opportunities-list">
+                            <!-- Opportunities will be dynamically loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Opportunity Modal -->
+    <div class="modal" id="opportunity-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Modal content will be dynamically loaded -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner">
+        <div class="spinner"></div>
+        <p>Finding opportunities near you...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FBLA Volunteer Connect</h4>
+                    <p>Empowering students to make a difference in their communities while developing leadership skills.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#opportunities">Opportunities</a></li>
+                        <li><a href="#about">About FBLA</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Questions? Contact your local FBLA chapter advisor.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FBLA Volunteer Connect. Building tomorrow's business leaders today.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
