@@ -1,0 +1,21 @@
+{
+  "name": "fbla-volunteer-connect",
+  "version": "1.0.0",
+  "description": "FBLA Volunteer Connect - Find Local Opportunities",
+  "main": "script.js",
+  "scripts": {
+    "dev": "live-server --port=3000",
+    "start": "live-server --port=3000"
+  },
+  "keywords": [
+    "fbla",
+    "volunteer",
+    "community",
+    "service"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
